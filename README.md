@@ -6,7 +6,7 @@ AutoHome Service Template
 [AutoHome](https://github.com/florisweb/AutoHome).
 
 
-### Available Projects:
+### Available Projects
 [ElektroLumen](https://github.com/florisweb/ElektroLumen): Automated Plant Watering System
 
 [CableLamp](https://github.com/florisweb/CableLamp): Dual Light Controller: a CableLamp and a Hernhutter Stern

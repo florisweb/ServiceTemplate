@@ -51,15 +51,15 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       {
         DynamicJsonDocument doc(1024);
         deserializeJson(doc, payload);
+        String type = doc["type"];
 
-        if (doc["type"] == "identify") 
+        if (type == "identify")
         {
           digitalWrite(LED_BUILTIN, HIGH);
           delay(400);
           digitalWrite(LED_BUILTIN, LOW);
           return;
-        }
-        if (doc["type"] == "heartbeat")
+        } else if (type == "heartbeat")
         {
           lastHeartBeat = millis();
           return;
@@ -70,18 +70,14 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         DynamicJsonDocument doc(1024);
         deserializeJson(doc, payload);
         String error = doc["error"];
-        String packetType = doc["type"];
-
-        Serial.print("Error: ");
-        Serial.println(error);
-        if (packetType == "auth" && doc["data"] == true)
+        String responseContent = doc["response"];
+        if (responseContent == "{\"type\":\"auth\",\"data\":true}");
         {
           Serial.println("Successfully authenticated.");
           authenticated = true;
         }
-
       }
-      //      webSocket.sendTXT(payload);
+  
       break;
     case WStype_BIN:
       //      hexdump(payload, length);
@@ -137,10 +133,10 @@ void connectionManager::loop() {
   deltaHeartbeat = millis() - lastHeartBeat;
   if (deltaHeartbeat > heartbeatFrequency * 2 && webSocket.isConnected())
   {
-    Serial.println("Disconnected due to 2 missing heartbeats"); 
+    Serial.println("Disconnected due to 2 missing heartbeats");
     webSocket.disconnect();
   }
 
-  
+
   webSocket.loop();
 }
